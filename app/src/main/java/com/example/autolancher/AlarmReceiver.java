@@ -12,7 +12,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         int type = intent.getIntExtra("type", 1);
         if (type == 1) {
             Log.e("AlarmReceiver= ","onReceive");
-            AppUtils.startApp(context, "com.tencent.wework");
+            AppUtils.startApp(context, Constant.wework);
         } else if (type == 2) {
             AppUtils.startApp(context, "com.sina.weibo");
         }

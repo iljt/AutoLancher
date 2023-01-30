@@ -8,12 +8,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 public class MainActivity extends Activity {
-
+    //延时时间:分钟
+    private long delayTime = 150;
     Handler mHandler = new Handler();
 
     Runnable runnable = new Runnable() {
@@ -23,8 +24,8 @@ public class MainActivity extends Activity {
             //do something
             //每隔1s循环执行run方法
             Log.e("MainActivity= ","runnable..");
-            AppUtils.startApp(MainActivity.this, "com.tencent.wework");
-            mHandler.postDelayed(this, 5000);
+            AppUtils.startApp(MainActivity.this, Constant.wework);
+            mHandler.postDelayed(this, 1000000000);
         }
     };
 
@@ -34,28 +35,34 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
-        TextView qw_tv = findViewById(R.id.qw_tv);
-        qw_tv.setOnClickListener(new View.OnClickListener() {
+        Button timer_tv = findViewById(R.id.timer_tv);
+        EditText time_et = findViewById(R.id.time_et);
+
+        Button qw_btn = findViewById(R.id.qw_btn);
+        //延时
+        qw_btn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                if(AppUtils.checkPackInfo(MainActivity.this,"com.tencent.wework")) {
+                delayTime = Long.parseLong(time_et.getText().toString().trim());
+                Log.e("MainActivity=","timer_tv onClick delayTime= "+delayTime);
+                mHandler.removeCallbacks(runnable);
+                mHandler.postDelayed(runnable,delayTime*60*1000);//延时 delayTime 分钟
+            }
+        });
+
+        //定时
+        timer_tv.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                if(AppUtils.checkPackInfo(MainActivity.this,Constant.wework)) {
                     Intent intent = new Intent(MainActivity.this, ClockActivity.class);
                     intent.putExtra("type", 1);
                     startActivity(intent);
                 }else {
                     Toast.makeText(MainActivity.this,"设备没有安装qw",Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-
-        Button timer_tv = findViewById(R.id.timer_tv);
-        timer_tv.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Log.e("MainActivity=","timer_tv onClick");
-                mHandler.postDelayed(runnable,70*60*1000);//延时100毫秒
             }
         });
     }

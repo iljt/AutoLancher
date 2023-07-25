@@ -2,9 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.autolancher">
 
+
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
     <!-- 指定包名-->
     <queries>
         <package android:name="com.tencent.wework"/>
+        <package android:name="com.example.autolancher"/>
     </queries>
 
     <application
